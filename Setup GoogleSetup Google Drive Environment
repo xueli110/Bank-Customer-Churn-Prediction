@@ -1,2 +1,29 @@
 #install pydrive to load data
-!
+!pip install -U -q PyDrive
+
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
+from google.colab import auth
+from oauth2client.client import GoogleCredentials
+
+auth.authenticate_user()
+gauth = GoogleAuth()
+gauth.credentials = GoogleCredentials.get_application_default()
+drive = GoogleDrive(gauth)
+
+link = 'https://drive.google.com/open?id=1eispPCMAQvWMcOF6M17LSoo06cMsnBUS'
+fluff, id = link.split('=')
+file = drive.CreateFile({'id':id}) 
+file.GetContentFile('bank_churn.csv') 
+
+import pandas as pd
+
+df = pd.read_csv('bank_churn.csv')
+df.head()
+
+import pandas as pd
+file_id='17nbs4OBtrj7kq40Lf9laopynyp4LJDGn'
+link='https://drive.google.com/uc?export=download&id={FILE_ID}'
+csv_url=link.format(FILE_ID=file_id)
+my_data = pd.read_csv(csv_url)
+my_data.head()
